@@ -49,10 +49,24 @@
          'scripts/directives.js',
          'scripts/controllers/main.js',
          'scripts/controllers/noty.js',
-         'scripts/controllers/screensaver.js'
+         'scripts/controllers/screensaver.js',
+         'scripts/fully-kiosk.js'
       ].map(function (value) {
          document.write('<sc'+'ript src="'+value+suffix+'"></scr'+'ipt>');
       });
+
+      ( function setupFullyKiosk() {
+         if ( !window.Api ) {
+            setTimeout( () => {
+               setupFullyKiosk();
+            }, 1000 );
+            return;
+         }      
+         if ( CONFIG.fullyKiosk && CONFIG.fullyKiosk.enabled ) {
+            this.fullyKiosk = new FullyKiosk( CONFIG, window.Api );
+            this.fullyKiosk.init();
+         }
+      } )();
    </script>
 </head>
 
